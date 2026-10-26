@@ -31,6 +31,8 @@ Item {
     CriticalPanelLoader { identifier: "iiBar"; extraCondition: !root.barVertical && root.barStock; component: Bar {} }
     CriticalPanelLoader { identifier: "iiBar"; extraCondition: !root.barVertical && root.barPill && !GlobalStates.widgetEditMode; component: PillBar {} }
     CriticalPanelLoader { identifier: "iiBar"; extraCondition: !root.barVertical && root.barM3 && !GlobalStates.widgetEditMode; component: BarM3.M3Bar {} }
-    CriticalPanelLoader { identifier: "iiVerticalBar"; extraCondition: root.barVertical; component: VerticalBar {} }
+    CriticalPanelLoader { identifier: "iiVerticalBar"; extraCondition: root.barVertical && !root.barM3; component: VerticalBar {} }
+    // Local change: M3 style also gets a vertical host (barM3/M3VerticalBar.qml)
+    CriticalPanelLoader { identifier: "iiVerticalBar"; extraCondition: root.barVertical && root.barM3 && !GlobalStates.widgetEditMode; component: BarM3.M3VerticalBar {} }
     CriticalPanelLoader { identifier: "iiDock"; extraCondition: Config.options?.dock?.enable ?? true; component: Dock {} }
 }

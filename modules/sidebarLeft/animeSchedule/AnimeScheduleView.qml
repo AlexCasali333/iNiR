@@ -7,7 +7,7 @@ import org.kde.kirigami as Kirigami
 import qs.modules.common
 import qs.modules.common.widgets
 import qs.modules.common.functions
-import "root:services"
+import qs.services
 import qs.services.deferred
 
 Item {

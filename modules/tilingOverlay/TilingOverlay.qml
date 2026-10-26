@@ -7,8 +7,8 @@ import Quickshell.Wayland
 import qs.modules.common
 import qs.modules.common.functions
 import qs.modules.common.widgets
-import "root:"
-import "root:services"
+import qs
+import qs.services
 
 Scope {
     id: root

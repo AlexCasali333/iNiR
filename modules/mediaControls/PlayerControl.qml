@@ -13,7 +13,7 @@ import qs.modules.common.models
 import qs.modules.mediaControls.components
 import qs.services
 import qs.services.deferred
-import "root:"
+import qs
 
 Item {
     id: root

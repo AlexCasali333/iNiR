@@ -12,7 +12,7 @@ import qs.modules.common.widgets
 import qs.modules.common.functions
 import qs.modules.common.models
 import qs.services
-import "root:"
+import qs
 
 /**
  * YtMusic Now Playing Card - Compact player with visualizer and adaptive colors.

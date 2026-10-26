@@ -11,7 +11,7 @@ import qs.modules.common.widgets
 import qs.modules.common.functions
 import qs.modules.background.widgets
 import qs.modules.background.widgets.japaneseTypography
-import "root:modules/background/widgets/japaneseTypography/JapaneseTypographyPresets.js" as JapanesePresets
+import "../background/widgets/japaneseTypography/JapaneseTypographyPresets.js" as JapanesePresets
 
 ContentPage {
     id: root

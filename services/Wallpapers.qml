@@ -9,8 +9,8 @@ import QtQuick
 import Qt.labs.folderlistmodel
 import Quickshell
 import Quickshell.Io
-import "root:"
-import "root:modules/common/functions/md5.js" as MD5
+import qs
+import "../modules/common/functions/md5.js" as MD5
 
 Singleton {
     id: root

@@ -9,7 +9,7 @@ import qs.modules.common.widgets
 import qs.modules.common.functions
 import qs.modules.common.models
 import qs.services
-import "root:"
+import qs
 
 Item {
     id: root

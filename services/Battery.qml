@@ -50,6 +50,13 @@ Singleton {
     property real timeToEmpty: !simulating ? UPower.displayDevice.timeToEmpty : onBattery ? Math.round(percentage * 18000) : 0
     property real timeToFull: !simulating ? UPower.displayDevice.timeToFull : isCharging ? Math.round((1 - percentage) * 7200) : 0
 
+    // Health lives on the physical pack; the composite display device may not report it.
+    readonly property var _pack: UPower.devices.values.find(d => d.isLaptopBattery && d.isPresent) ?? UPower.displayDevice
+    readonly property bool healthSupported: simulating || (_pack?.healthSupported ?? false)
+    property real health: simulating ? 100 : healthSupported ? (_pack.healthPercentage ?? 0) : 0
+    // UPower's cycle count isn't exposed by Quickshell; 0 reads as unknown.
+    property int chargeCycles: 0
+
     IpcHandler {
         target: "battery"
 

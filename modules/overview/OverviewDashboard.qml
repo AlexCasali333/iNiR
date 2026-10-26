@@ -13,7 +13,7 @@ import QtQuick.Effects
 import Quickshell
 import Quickshell.Io
 import Quickshell.Services.Mpris
-import "root:"
+import qs
 
 Item {
     id: root
