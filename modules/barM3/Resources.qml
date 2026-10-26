@@ -3,6 +3,7 @@ import qs.modules.common
 import qs.modules.common.widgets
 import QtQuick
 import QtQuick.Layouts
+import Quickshell
 
 BarWidgetSwitcherArea {
     id: root
@@ -14,22 +15,23 @@ BarWidgetSwitcherArea {
     readonly property bool clickForDetails: Config.options?.bar?.m3?.tooltips?.clickToShow ?? false
     hoverEnabled: true
 
+    // Local change: left click opens btop in the configured terminal
     onClicked: mouse => {
-        if (mouse.button === Qt.LeftButton && root.clickForDetails)
-            resourcesPopup.active = !resourcesPopup.active
+        if (mouse.button === Qt.LeftButton)
+            Quickshell.execDetached([Config.options?.apps?.terminal ?? "kitty", "-e", "btop"])
     }
 
     rowDefault: Component {
         RowLayout {
             spacing: 0
             Resource {
-                iconName: "memory"
+                iconName: "layers"
                 shown: Config.options.bar.m3.resources.alwaysShowRam
                 percentage: ResourceUsage.memoryUsedPercentage
                 warningThreshold: Config.options.bar.m3.resources.memoryWarningThreshold
             }
             Resource {
-                iconName: "planner_review"
+                iconName: "memory"
                 shown: Config.options.bar.m3.resources.alwaysShowCpu
                 percentage: ResourceUsage.cpuUsage
                 Layout.leftMargin: shown ? 6 : 0
@@ -61,13 +63,13 @@ BarWidgetSwitcherArea {
         RowLayout {
             spacing: 0
             Resource {
-                iconName: "memory"
+                iconName: "layers"
                 shown: Config.options.bar.m3.resources.alwaysShowRam
                 percentage: ResourceUsage.memoryUsedPercentage
                 warningThreshold: Config.options.bar.m3.resources.memoryWarningThreshold
             }
             Resource {
-                iconName: "planner_review"
+                iconName: "memory"
                 shown: Config.options.bar.m3.resources.alwaysShowCpu
                 percentage: ResourceUsage.cpuUsage
                 Layout.leftMargin: shown ? 6 : 0
@@ -100,7 +102,7 @@ BarWidgetSwitcherArea {
             spacing: 7
             Resource {
                 Layout.alignment: Qt.AlignHCenter
-                iconName: "memory"
+                iconName: "layers"
                 vertical: true
                 visible: Config.options.bar.m3.resources.alwaysShowRam
                 percentage: ResourceUsage.memoryUsedPercentage
@@ -108,7 +110,7 @@ BarWidgetSwitcherArea {
             }
             Resource {
                 Layout.alignment: Qt.AlignHCenter
-                iconName: "planner_review"
+                iconName: "memory"
                 vertical: true
                 visible: Config.options.bar.m3.resources.alwaysShowCpu
                 percentage: ResourceUsage.cpuUsage
@@ -144,7 +146,7 @@ BarWidgetSwitcherArea {
             spacing: 7
             Resource {
                 Layout.alignment: Qt.AlignHCenter
-                iconName: "memory"
+                iconName: "layers"
                 vertical: true
                 visible: Config.options.bar.m3.resources.alwaysShowRam
                 percentage: ResourceUsage.memoryUsedPercentage
@@ -152,7 +154,7 @@ BarWidgetSwitcherArea {
             }
             Resource {
                 Layout.alignment: Qt.AlignHCenter
-                iconName: "planner_review"
+                iconName: "memory"
                 vertical: true
                 visible: Config.options.bar.m3.resources.alwaysShowCpu
                 percentage: ResourceUsage.cpuUsage

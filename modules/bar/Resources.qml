@@ -3,6 +3,7 @@ import qs.modules.common
 import qs.services
 import QtQuick
 import QtQuick.Layouts
+import Quickshell
 
 MouseArea {
     id: root
@@ -11,6 +12,9 @@ MouseArea {
     implicitWidth: rowLayout.implicitWidth + rowLayout.anchors.leftMargin + rowLayout.anchors.rightMargin
     implicitHeight: Appearance.sizes.barHeight
     hoverEnabled: true
+    cursorShape: Qt.PointingHandCursor
+    // Local change: click opens btop in the configured terminal
+    onClicked: Quickshell.execDetached([Config.options?.apps?.terminal ?? "kitty", "-e", "btop"])
 
     property QtObject resourceMonitor: ResourceUsageMonitor { target: root }
 

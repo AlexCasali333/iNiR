@@ -96,7 +96,7 @@ BarWidgetSwitcher {
                             ? Appearance.font.pixelSize.smallest - 2
                             : (root._timePixelSize > 0
                                 ? root._timePixelSize : Appearance.font.pixelSize.small)
-                        color: Appearance.colors.colPrimary
+                        color: M3Palette.neutralPills ? M3Palette.surfaceForeground : Appearance.colors.colPrimary
                         text: modelData.padStart(2, "0")
                     }
                 }
@@ -106,7 +106,7 @@ BarWidgetSwitcher {
                 width: 25
                 height: 25
                 radius: Appearance.rounding.full
-                color: M3Palette.primary
+                color: M3Palette.accentFill
                 Layout.alignment: Qt.AlignHCenter
 
                 MaterialSymbol {
@@ -114,7 +114,7 @@ BarWidgetSwitcher {
                     fill: 0
                     text: "calendar_clock"
                     iconSize: Appearance.font.pixelSize.normal
-                    color: M3Palette.primaryForeground
+                    color: M3Palette.accentInk
                 }
             }
         }
@@ -179,7 +179,7 @@ BarWidgetSwitcher {
                 implicitWidth: timeText.implicitWidth + 16
                 implicitHeight: Math.max(24, timeText.implicitHeight + 6)
                 radius: Appearance.editorialEverywhere ? Appearance.rounding.small : Appearance.rounding.full
-                color: M3Palette.primary
+                color: M3Palette.accentFill
 
                 StyledText {
                     id: timeText
@@ -188,7 +188,7 @@ BarWidgetSwitcher {
                         ? root._timeFontFamily : Appearance.font.family.main
                     font.pixelSize: root._timePixelSize > 0
                         ? root._timePixelSize : Appearance.font.pixelSize.smallie
-                    color: M3Palette.primaryForeground
+                    color: M3Palette.accentInk
                     font.weight: Appearance.editorialEverywhere ? Appearance.editorial.titleWeight : Font.Bold
                     text: pill.ampm !== "" ? pill.hours.padStart(2, "0") + ":" + pill.minutes.padStart(2, "0") : DateTime.time
                     font.features: { "tnum": 1 }

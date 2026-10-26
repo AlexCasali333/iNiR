@@ -189,7 +189,8 @@ Item {
     property int widgetPadding: 4
     property int workspaceButtonWidth: 26
     property real activeWorkspaceMargin: 2
-    property real workspaceIconSize: workspaceButtonWidth * 0.69
+    // Local change: app icon fills the active indicator instead of leaving a ring around it
+    property real workspaceIconSize: workspaceButtonWidth - activeWorkspaceMargin * 2
     property real workspaceIconSizeShrinked: workspaceButtonWidth * 0.55
     property real workspaceIconOpacityShrinked: 1
     property real workspaceIconMarginShrinked: -4
@@ -541,7 +542,9 @@ Item {
                             if (!niriWorkspace) return null
                             const wins = NiriService.windows?.filter(w => w.workspace_id === niriWorkspace.id) ?? []
                             if (wins.length === 0) return null
-                            return wins.find(w => w.is_focused) || wins[0]
+                            // active_window_id is per workspace; is_focused is global, so it
+                            // misses on unfocused outputs and falls back to an arbitrary window.
+                            return wins.find(w => w.id === niriWorkspace.active_window_id) || wins[0]
                         } else {
                             return HyprlandData.biggestWindowForWorkspace(button.workspaceValue)
                         }
@@ -641,6 +644,7 @@ Item {
                         }
                     }
                     Item { // Main app icon
+                        id: mainAppIconHost
                         anchors.centerIn: parent
                         width: workspaceButtonWidth
                         height: workspaceButtonWidth
@@ -648,17 +652,33 @@ Item {
                             (workspaceButtonBackground.biggestWindow && !root.showNumbers && root.showAppIcons) ?
                             1 : workspaceButtonBackground.biggestWindow ? workspaceIconOpacityShrinked : 0
                             visible: opacity > 0
+                        // Local change: a full-size icon is cropped to the indicator circle,
+                        // so icons with transparent margins don't leave a ring around them
+                        readonly property bool fullIcon: !root.showNumbers && root.showAppIcons
+                        layer.enabled: fullIcon
+                        layer.effect: OpacityMask {
+                            maskSource: Item {
+                                width: mainAppIconHost.width
+                                height: mainAppIconHost.height
+                                Rectangle {
+                                    anchors.centerIn: parent
+                                    width: workspaceIconSize
+                                    height: workspaceIconSize
+                                    radius: width / 2
+                                }
+                            }
+                        }
                         IconImage {
                             id: mainAppIcon
                             anchors.bottom: parent.bottom
                             anchors.right: parent.right
                             anchors.bottomMargin: (!root.showNumbers && root.showAppIcons) ?
-                                (workspaceButtonWidth - workspaceIconSize) / 2 : workspaceIconMarginShrinked
+                                0 : workspaceIconMarginShrinked
                             anchors.rightMargin: (!root.showNumbers && root.showAppIcons) ?
-                                (workspaceButtonWidth - workspaceIconSize) / 2 : workspaceIconMarginShrinked
+                                0 : workspaceIconMarginShrinked
 
                             source: workspaceButtonBackground.mainAppIconSource
-                            implicitSize: (!root.showNumbers && root.showAppIcons) ? workspaceIconSize : workspaceIconSizeShrinked
+                            implicitSize: (!root.showNumbers && root.showAppIcons) ? workspaceButtonWidth : workspaceIconSizeShrinked
 
                             Behavior on opacity {
                                 animation: NumberAnimation { duration: Appearance.animation.elementMoveFast.duration; easing.type: Appearance.animation.elementMoveFast.type; easing.bezierCurve: Appearance.animation.elementMoveFast.bezierCurve }

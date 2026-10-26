@@ -21,7 +21,7 @@ StyledPopup {
 
             ResourceCard {
                 label: "RAM"
-                iconText: "memory"
+                iconText: "layers"
                 iconShape: MaterialShape.Shape.Clover4Leaf
                 value: ResourceUsage.memoryUsed / ResourceUsage.memoryTotal
                 sublabel: root.formatKB(ResourceUsage.memoryUsed) + " / " + root.formatKB(ResourceUsage.memoryTotal)
@@ -29,7 +29,7 @@ StyledPopup {
 
             ResourceCard {
                 label: "CPU"
-                iconText: "planner_review"
+                iconText: "memory"
                 iconShape: MaterialShape.Shape.Gem
                 value: ResourceUsage.cpuUsage
                 sublabel: `${Math.round(ResourceUsage.cpuTemp)}°C`

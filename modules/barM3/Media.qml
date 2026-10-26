@@ -385,15 +385,29 @@ Item {
                         implicitWidth: 26
                         implicitHeight: 26
                         radius: Appearance.rounding.full
-                        color: root.mediaContainer
+                        // Local change: no backing disc behind loaded art, so its
+                        // antialiased edge doesn't show as a light ring
+                        color: root.artDownloaded ? "transparent" : root.mediaContainer
                         Layout.alignment: Qt.AlignVCenter
+                        // Local change: the art is drawn slightly larger and cropped to
+                        // this circle, so covers with a thin frame at the edge fill it
+                        layer.enabled: true
+                        layer.effect: OpacityMask {
+                            maskSource: Rectangle {
+                                width: artRect.width
+                                height: artRect.height
+                                radius: width / 2
+                            }
+                        }
 
                         MediaCrossSlideImage {
-                            anchors.fill: parent
+                            anchors.centerIn: parent
+                            width: parent.width * 1.15
+                            height: parent.height * 1.15
                             source: root.displayedArtFilePath
                             transitionKey: root.artworkTransitionKey
                             downloaded: root.artDownloaded
-                            artRadius: artRect.radius
+                            artRadius: 0
                             placeholderColor: root.mediaContainer
                             iconColor: root.mediaInk
                             iconSize: Appearance.font.pixelSize.normal

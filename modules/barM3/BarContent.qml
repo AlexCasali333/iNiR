@@ -62,8 +62,20 @@ Item {
         || Quickshell.screens.length <= 1
         || String(root.screen?.name ?? "") === String(GlobalStates.primaryScreen?.name ?? "")
 
+    readonly property bool workspaceHasWindows: {
+        const ws = (NiriService.allWorkspaces ?? [])
+            .find(w => w.output === String(root.screen?.name ?? "") && w.is_active)
+        return !!ws && (NiriService.windows ?? []).some(w => w.workspace_id === ws.id)
+    }
+
     function filterLayout(layout) {
         let filtered = Array.from(layout ?? [])
+        // The window list stands in for the workspace indicator while there are
+        // windows to show; an empty workspace falls back to the indicator.
+        if (!CompositorService.isNiri || !root.workspaceHasWindows)
+            filtered = filtered.filter(name => name !== "windowList")
+        else if (filtered.includes("windowList"))
+            filtered = filtered.filter(name => name !== "workspaces")
         if (!root.trayHasItems)
             filtered = filtered.filter(name => name !== "sysTray")
         if (!Battery.available)

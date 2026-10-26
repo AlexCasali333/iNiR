@@ -8,7 +8,9 @@ QtObject {
     readonly property bool angelStyle: Appearance.angelEverywhere
     readonly property bool inirStyle: Appearance.inirEverywhere
     readonly property bool auroraStyle: Appearance.auroraEverywhere && !angelStyle
-    readonly property bool neutralDialect: angelStyle || inirStyle || auroraStyle
+    // Local change: bar.m3.neutralPills opts the Material style into the neutral pill tones
+    readonly property bool neutralPills: Config.options?.bar?.m3?.neutralPills ?? false
+    readonly property bool neutralDialect: angelStyle || inirStyle || auroraStyle || neutralPills
 
     readonly property color surface: angelStyle ? Appearance.angel.colGlassPanel
         : inirStyle ? Appearance.inir.colLayer0
@@ -44,11 +46,19 @@ QtObject {
     readonly property color primary: Appearance.colors.colPrimary
     readonly property color primaryForeground: ColorUtils.ensureReadable(
         Appearance.colors.colOnPrimary, primary, 4.5)
-    readonly property color primaryContainer: neutralDialect ? surfaceContainerLow : Appearance.colors.colPrimaryContainer
+    // Local change: filled accents (clock chip, power button) keep the theme colour even with
+    // bar.m3.neutralPills, so a neutral bar still has a couple of coloured spots
+    readonly property color accentFill: primary
+    readonly property color accentInk: primaryForeground
+    // Local change: neutralPills sits two surface steps higher than the other neutral dialects
+    // so the pills stand out from the bar
+    readonly property color primaryContainer: neutralPills ? surfaceContainerHigh
+        : neutralDialect ? surfaceContainerLow : Appearance.colors.colPrimaryContainer
     readonly property color primaryContainerForeground: ColorUtils.ensureReadable(
         neutralDialect ? surfaceForeground : Appearance.colors.colOnPrimaryContainer,
         primaryContainer, 4.5)
-    readonly property color secondaryContainer: neutralDialect ? surfaceContainer : Appearance.colors.colSecondaryContainer
+    readonly property color secondaryContainer: neutralPills ? Appearance.colors.colSurfaceContainerHighest
+        : neutralDialect ? surfaceContainer : Appearance.colors.colSecondaryContainer
     readonly property color secondaryContainerForeground: ColorUtils.ensureReadable(
         neutralDialect ? surfaceForeground : Appearance.colors.colOnSecondaryContainer,
         secondaryContainer, 4.5)
@@ -107,9 +117,10 @@ QtObject {
             return primaryContainerForeground
 
         if (neutralDialect) {
+            // Local change: with neutralPills the stats take the primary colour
             if (name === "resources")
-                return ColorUtils.adaptAccent(tertiary, pillContainer(name), 4.0, 0.42, 0.18, 0.84)
-            return ColorUtils.ensureReadable(surfaceForeground, pillContainer(name), 4.5)
+                return ColorUtils.adaptAccent(neutralPills ? primary : tertiary, pillContainer(name), 4.0, 0.42, 0.18, 0.84)
+            return ColorUtils.ensureReadable(surfaceForeground, pillContainer(name), neutralPills ? 7.0 : 4.5)
         }
 
         switch (name) {

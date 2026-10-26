@@ -16,12 +16,12 @@ RippleButton {
     implicitHeight: implicitWidth
 
     buttonRadius: Appearance.rounding.full
-    colBackground: isMaterial ? M3Palette.primary : "transparent"
+    colBackground: isMaterial ? M3Palette.accentFill : "transparent"
     colBackgroundHover: isMaterial
-        ? ColorUtils.mix(M3Palette.primary, M3Palette.primaryForeground, 0.90)
+        ? ColorUtils.mix(M3Palette.accentFill, M3Palette.accentInk, 0.90)
         : Appearance.colors.colLayer1Hover
     colRipple: isMaterial
-        ? ColorUtils.mix(M3Palette.primary, M3Palette.primaryForeground, 0.78)
+        ? ColorUtils.mix(M3Palette.accentFill, M3Palette.accentInk, 0.78)
         : Appearance.colors.colLayer1Active
 
     onPressed: {
@@ -41,8 +41,8 @@ RippleButton {
         visible: root.isMaterial
         text: "power_settings_new"
         iconSize: Appearance.font.pixelSize.normal
-        color: M3Palette.primaryForeground
-        colSymbol: M3Palette.primary
+        color: M3Palette.accentInk
+        colSymbol: M3Palette.accentFill
         shape: MaterialShape.Shape.Cookie12Sided
         padding: 2
     }

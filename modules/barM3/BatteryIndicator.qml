@@ -34,7 +34,10 @@ MouseArea {
         anchors.centerIn: parent
         value: percentage
         rotation: root.vertical ? -90 : 0
-        highlightColor: (isLow && !isCharging) ? M3Palette.error : M3Palette.pillInk("batteryIndicator")
+        // Local change: softer fill with bar.m3.neutralPills so a full battery doesn't glow white
+        highlightColor: (isLow && !isCharging) ? M3Palette.error
+            : M3Palette.neutralPills ? M3Palette.surfaceVariantForeground
+            : M3Palette.pillInk("batteryIndicator")
         Item {
             anchors.centerIn: parent
             width: batteryProgress.valueBarWidth

@@ -14,6 +14,7 @@ HyprlandXkbIndicator 1.0 HyprlandXkbIndicator.qml
 LeftSidebarButton 1.0 LeftSidebarButton.qml
 RightSidebarButton 1.0 RightSidebarButton.qml
 M3Bar 1.0 M3Bar.qml
+M3VerticalBar 1.0 M3VerticalBar.qml
 singleton M3Palette 1.0 M3Palette.qml
 M3ToolTip 1.0 M3ToolTip.qml
 Media 1.0 Media.qml
@@ -39,4 +40,5 @@ Visualizer 1.0 Visualizer.qml
 WeatherBar 1.0 WeatherBar.qml
 WeatherCard 1.0 WeatherCard.qml
 WeatherPopup 1.0 WeatherPopup.qml
+WindowList 1.0 WindowList.qml
 Workspaces 1.0 Workspaces.qml
