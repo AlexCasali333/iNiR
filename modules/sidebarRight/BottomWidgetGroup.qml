@@ -66,6 +66,8 @@ Rectangle {
     property bool collapsed: Persistent.states?.sidebar?.bottomGroup?.collapsed ?? false
     
     property var allTabs: [
+        // Local change: RSS news tab (NewsFeed.qml)
+        {"type": "news", "name": "Noticias", "icon": "newspaper", "widget": newsWidget},
         {"type": "calendar", "name": Translation.tr("Calendar"), "icon": "calendar_month", "widget": calendarWidget},
         {"type": "events", "name": Translation.tr("Events"), "icon": "event_upcoming", "widget": eventsWidgetComponent},
         {"type": "todo", "name": Translation.tr("To Do"), "icon": "done_outline", "widget": todoWidget},
@@ -107,6 +109,14 @@ Rectangle {
     signal openEventsDialog(var editEvent)
     signal requestExpand(string widgetType)
     readonly property string activeTabType: root.tabs[root.selectedTab]?.type ?? ""
+
+    Component {
+        id: newsWidget
+        NewsFeed {
+            anchors.fill: parent
+            anchors.margins: 5
+        }
+    }
 
     // Events component
     Component {
@@ -328,7 +338,8 @@ Rectangle {
                 ColumnLayout {
                     id: tabColumn
                     width: parent.width
-                    y: Math.max(0, (railFlickable.height - implicitHeight) / 2)
+                    // Local change: rail starts at the top, level with the widget content
+                    y: 0
                     spacing: 0
 
                     NavigationRailTabArray {
@@ -399,14 +410,21 @@ Rectangle {
         // which feeds the group's implicitHeight, which sizes the whole panel when
         // the collapse-when-empty mode shrinks the sidebar. A raw height binding
         // painted this tall but reported ~0, so the shrunken panel clipped the group.
-        StackLayout {
+        // Local change: plain Item instead of StackLayout. StackLayout picks
+        // children by position, and after the tab list changed (e.g. a new tab)
+        // the Repeater's items no longer matched their indices, so the selected
+        // tab could render blank. Each tab item now shows itself by its own index.
+        Item {
             id: tabStack
             Layout.fillWidth: true
             Layout.preferredHeight: (tabs.length > 0) ? Math.max(300, ...tabStack.children.map(child => child.tabLoader?.item?.implicitHeight || child.tabLoader?.implicitHeight || 0)) : 0
-            Layout.alignment: Qt.AlignVCenter
+            Layout.alignment: Qt.AlignTop
+            // Local change: the news list uses all the height the panel gives the group
+            // (other tabs keep their own height so the calendar isn't stretched)
+            Layout.fillHeight: (root.tabs[root.selectedTab]?.type ?? "") === "news"
             property int realIndex: root.selectedTab
             property int animationDuration: Appearance.animation.elementMoveFast.duration * 1.5
-            currentIndex: root.selectedTab
+            property int currentIndex: root.selectedTab
 
             // Switch the tab on halfway of the anim duration
             Connections {
@@ -434,6 +452,9 @@ Rectangle {
                     property string tabType: modelData.type
                     property int animDistance: 5
                     property var tabLoader: tabLoader
+                    width: tabStack.width
+                    height: tabStack.height
+                    visible: tabStack.currentIndex === tabItem.tabIndex || opacity > 0
                     // Opacity: show up only when being animated to
                     opacity: (tabStack.currentIndex === tabItem.tabIndex && tabStack.realIndex === tabItem.tabIndex) ? 1 : 0
                     // Y: animate both outgoing and incoming tabs

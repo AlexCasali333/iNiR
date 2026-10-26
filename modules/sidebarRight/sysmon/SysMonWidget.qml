@@ -7,7 +7,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import Quickshell
 import Quickshell.Io
-import "root:"
+import qs
 
 Item {
     id: root

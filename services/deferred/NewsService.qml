@@ -4,7 +4,7 @@ import QtQuick
 import Quickshell
 import qs.modules.common
 import qs.services
-import "root:"
+import qs
 
 /**
  * NewsService - Google News RSS (no auth/API key required)

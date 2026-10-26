@@ -187,7 +187,9 @@ Item {
             if (def.includes(saved[i]) && !result.includes(saved[i])) result.push(saved[i])
         for (let i = 0; i < def.length; i++)
             if (!result.includes(def[i])) result.push(def[i])
-        return result
+        // Local change: sidebar.right.hiddenSections removes sections entirely
+        const hidden = Config.options?.sidebar?.right?.hiddenSections ?? []
+        return result.filter(id => !hidden.includes(id))
     }
     // Loaded BottomWidgetGroup instance (section delegates load lazily).
     // Its collapse state participates in the parent's elastic layout instead
