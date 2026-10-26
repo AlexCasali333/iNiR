@@ -211,6 +211,13 @@ AbstractBackgroundWidget {
     readonly property real secondarySize: Config.getNestedValue("background.widgets.japaneseTypography.secondarySize", 18)
     readonly property real footerSize: Config.getNestedValue("background.widgets.japaneseTypography.footerSize", 14)
     readonly property real dateSize: Config.getNestedValue("background.widgets.japaneseTypography.dateSize", 12)
+    // Local change: seal glyph size in px; 0 keeps the size derived from the secondary text.
+    readonly property real sealSize: Math.max(0, Config.getNestedValue("background.widgets.japaneseTypography.sealSize", 0))
+    // Local change: read the title and note from the bottom up.
+    readonly property bool flowUp: Config.getNestedValue("background.widgets.japaneseTypography.flowUp", false)
+    readonly property real sealGlyphSize: root.sealSize > 0
+        ? Math.round(root.sealSize * root.scaleFactor)
+        : Math.max(10 * root.scaleFactor, root.notePixelSize * 0.86)
     readonly property int primaryColumns: Math.max(1, Math.min(4,
         Config.getNestedValue("background.widgets.japaneseTypography.primaryColumns", 2)))
     readonly property int secondaryColumns: Math.max(1, Math.min(5,
@@ -374,6 +381,7 @@ AbstractBackgroundWidget {
                 columnGap: root.effectiveColumnGap
                 maxColumns: root.compact ? 1 : root.primaryColumns
                 rotateLatin: root.rotateLatin
+                flowUp: root.flowUp
                 color: root.leadInk
                 textStyle: root.glyphTextStyle
                 styleColor: root.outlineInk
@@ -399,6 +407,7 @@ AbstractBackgroundWidget {
                 columnGap: Math.max(5 * root.scaleFactor, root.effectiveColumnGap * 0.65)
                 maxColumns: root.compact ? 1 : root.secondaryColumns
                 rotateLatin: root.rotateLatin
+                flowUp: root.flowUp
                 color: root.noteInk
                 textStyle: root.glyphTextStyle
                 styleColor: root.outlineInk
@@ -408,10 +417,16 @@ AbstractBackgroundWidget {
                 id: seal
                 visible: root.showSeal && body.width >= 220 * root.scaleFactor && body.height >= 260 * root.scaleFactor
                 x: root.mirrorLayout ? 0 : body.width - width
-                anchors.top: parent.top
-                width: Math.max(34 * root.scaleFactor, root.notePixelSize * 2.35)
-                height: Math.min(body.height * 0.30,
-                    Math.max(74 * root.scaleFactor, Array.from(root.sealText).length * root.notePixelSize * 1.22 + 18 * root.scaleFactor))
+                anchors.top: root.flowUp ? undefined : parent.top
+                anchors.bottom: root.flowUp ? parent.bottom : undefined
+                width: root.sealSize > 0
+                    ? Math.round(root.sealGlyphSize * 1.08 + 20 * root.scaleFactor)
+                    : Math.max(34 * root.scaleFactor, root.notePixelSize * 2.35)
+                height: root.sealSize > 0
+                    ? Math.min(body.height * 0.5,
+                        Math.round(Array.from(root.sealText).length * root.sealGlyphSize * 1.08 + 20 * root.scaleFactor))
+                    : Math.min(body.height * 0.30,
+                        Math.max(74 * root.scaleFactor, Array.from(root.sealText).length * root.notePixelSize * 1.22 + 18 * root.scaleFactor))
                 color: ColorUtils.applyAlpha(root.sealBase, root.sealFillOpacity)
                 border.width: Math.max(1, Math.round(root.scaleFactor))
                 border.color: root.sealInk
@@ -430,12 +445,13 @@ AbstractBackgroundWidget {
                             Array.from(root.sealText).length * sealTypography.cellAdvance)))
                     text: root.sealText
                     fontFamily: root.fontFamily
-                    fontPixelSize: Math.max(10 * root.scaleFactor, root.notePixelSize * 0.86)
+                    fontPixelSize: root.sealGlyphSize
                     fontWeight: Font.DemiBold
                     letterSpacing: 0
                     columnGap: 0
                     maxColumns: 1
                     rotateLatin: root.rotateLatin
+                    flowUp: root.flowUp
                     color: root.sealInk
                 }
             }

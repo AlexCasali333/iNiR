@@ -7,7 +7,7 @@ import qs.services
 import qs.modules.common
 import qs.modules.common.widgets
 import qs.modules.common.functions
-import "root:modules/common/functions/parallax.js" as ParallaxMath
+import "../common/functions/parallax.js" as ParallaxMath
 
 ContentPage {
     id: root

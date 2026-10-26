@@ -15,6 +15,8 @@ Item {
     property real columnGap: 10
     property int maxColumns: 4
     property bool rotateLatin: false
+    // Local change: stack characters from the bottom up (first character at the bottom).
+    property bool flowUp: false
     property color color: Appearance.colors.colOnLayer0
     property int textStyle: Text.Normal
     property color styleColor: "transparent"
@@ -102,37 +104,45 @@ Item {
         Repeater {
             model: root.columns
 
-            delegate: Column {
+            delegate: Item {
+                id: columnSlot
                 required property var modelData
                 width: root.cellSize
-                spacing: 0
+                height: root.height
 
-                Repeater {
-                    model: parent.modelData
+                Column {
+                    width: root.cellSize
+                    spacing: 0
+                    anchors.top: root.flowUp ? undefined : parent.top
+                    anchors.bottom: root.flowUp ? parent.bottom : undefined
 
-                    delegate: Item {
-                        required property string modelData
-                        width: root.cellSize
-                        height: root.cellAdvance
-                        clip: true
+                    Repeater {
+                        model: root.flowUp ? columnSlot.modelData.slice().reverse() : columnSlot.modelData
 
-                        StyledText {
-                            anchors.fill: parent
-                            text: parent.modelData
-                            color: root.color
-                            style: root.textStyle
-                            styleColor: root.styleColor
-                            maximumLineCount: 1
-                            wrapMode: Text.NoWrap
-                            horizontalAlignment: root._isCornerPunctuation(text) ? Text.AlignRight : Text.AlignHCenter
-                            verticalAlignment: root._isCornerPunctuation(text) ? Text.AlignTop : Text.AlignVCenter
-                            rotation: root._rotatesInVertical(text) ? 90 : 0
-                            font {
-                                family: root.fontFamily
-                                pixelSize: root._isCornerPunctuation(text)
-                                    ? Math.max(1, Math.round(root.fontPixelSize * 0.68))
-                                    : root.fontPixelSize
-                                weight: root.fontWeight
+                        delegate: Item {
+                            required property string modelData
+                            width: root.cellSize
+                            height: root.cellAdvance
+                            clip: true
+
+                            StyledText {
+                                anchors.fill: parent
+                                text: parent.modelData
+                                color: root.color
+                                style: root.textStyle
+                                styleColor: root.styleColor
+                                maximumLineCount: 1
+                                wrapMode: Text.NoWrap
+                                horizontalAlignment: root._isCornerPunctuation(text) ? Text.AlignRight : Text.AlignHCenter
+                                verticalAlignment: root._isCornerPunctuation(text) ? Text.AlignTop : Text.AlignVCenter
+                                rotation: root._rotatesInVertical(text) ? 90 : 0
+                                font {
+                                    family: root.fontFamily
+                                    pixelSize: root._isCornerPunctuation(text)
+                                        ? Math.max(1, Math.round(root.fontPixelSize * 0.68))
+                                        : root.fontPixelSize
+                                    weight: root.fontWeight
+                                }
                             }
                         }
                     }

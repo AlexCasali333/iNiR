@@ -38,12 +38,13 @@ import qs.modules.background.widgets.userCard
 import qs.modules.background.widgets.newsTicker
 import qs.modules.background.widgets.mascot
 import qs.modules.background.widgets.japaneseTypography
+import qs.modules.background.widgets.japaneseTypographyB
 import qs.modules.background.desktopItems
 import qs.modules.iris.components
 import qs.modules.iris.style
 import qs.modules.iris.frame
 import qs.modules.iris.background
-import "root:modules/common/functions/parallax.js" as ParallaxMath
+import "../common/functions/parallax.js" as ParallaxMath
 import "widgets/OrganicEdgeConfig.js" as OrganicEdgeConfig
 
 Scope {
@@ -1159,6 +1160,9 @@ Scope {
         // Keep background behind the lock surface. Moving this to Overlay can capture input.
         WlrLayershell.layer: WlrLayer.Bottom
         WlrLayershell.namespace: "quickshell:background"
+        // Local change: hide the desktop while Niri's overview is open, so an
+        // empty workspace shows only the shared backdrop instead of a tile.
+        contentItem.opacity: (CompositorService.isNiri && NiriService.inOverview) ? 0 : 1
         // Host for LiveLayer (continuous motion in a widget moves to a small surface of its own instead of
         // repainting this whole output every frame): nothing here covers or moves a still widget outside edit.
         readonly property bool liveCalm: !GlobalStates.widgetEditMode && !GlobalStates.shellLayoutEditMode
@@ -3290,6 +3294,23 @@ Scope {
                     WidgetInputMask { id: _hitMask14; loader: parent }
                     sourceComponent: JapaneseTypographyWidget {
                         widgetIndex: 13
+                        outputName: bgRoot.screen?.name ?? ""
+                        screenWidth: bgRoot.screen.width
+                        screenHeight: bgRoot.screen.height
+                        scaledScreenWidth: bgRoot.screen.width
+                        scaledScreenHeight: bgRoot.screen.height
+                        wallpaperScale: 1
+                    }
+                }
+
+                // Second Japanese Typography instance (local clone: widgets/japaneseTypographyB)
+                FadeLoader {
+                    shown: bgRoot._widgetEnabled("japaneseTypographyB", false)
+                    z: item?.desktopStackZ ?? 0
+                    containmentMask: GlobalStates.widgetEditMode ? _hitMaskJtB : null
+                    WidgetInputMask { id: _hitMaskJtB; loader: parent }
+                    sourceComponent: JapaneseTypographyBWidget {
+                        widgetIndex: 70
                         outputName: bgRoot.screen?.name ?? ""
                         screenWidth: bgRoot.screen.width
                         screenHeight: bgRoot.screen.height

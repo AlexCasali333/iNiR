@@ -1727,6 +1727,83 @@ Singleton {
                         property string sealText: "特別展"
                         property string footerText: "PACIFIC DRIVE-IN"
                         property string dateText: "7.12 — 8.31"
+                        property real sealSize: 0
+                        property bool flowUp: false
+                        property bool showSecondary: true
+                        property bool showSeal: true
+                        property bool showFooter: true
+                        property bool showRule: true
+                        property string fontPreset: "mincho"
+                        property string fontFamily: "serif"
+                        property string secondaryFontFamily: ""
+                        property string latinFontFamily: ""
+                        property int primaryWeight: 500
+                        property int secondaryWeight: 400
+                        property int latinWeight: 600
+                        property int primarySize: 72
+                        property int secondarySize: 18
+                        property int footerSize: 14
+                        property int dateSize: 12
+                        property int primaryColumns: 2
+                        property int secondaryColumns: 2
+                        property int columnGap: 14
+                        property int letterSpacing: 2
+                        property int secondaryLetterSpacing: 1
+                        property bool mirrorLayout: false
+                        property bool rotateLatin: false
+                        property string paletteMode: "adaptive"
+                        property string palettePreset: "adaptive"
+                        property string primaryColor: "#E7D4B2"
+                        property string secondaryColor: "#CDB48D"
+                        property string sealColor: "#A64B39"
+                        property string detailColor: "#D0B996"
+                        property string ruleColor: "#C18A53"
+                        property int primaryOpacity: 100
+                        property int secondaryOpacity: 78
+                        property int sealOpacity: 100
+                        property int detailOpacity: 72
+                        property int ruleOpacity: 78
+                        property real sealFillOpacity: 0
+                        property int ruleThickness: 1
+                        property string outlineColor: "#000000"
+                        property int outlineOpacity: 0
+                        property int shadowStrength: 35
+                        property int contentWidth: 330
+                        property int contentHeight: 600
+                        property int dim: 10
+                        property int widgetScale: 100
+                        property int widgetOpacity: 100
+                        property bool showBackground: false
+                        property bool useBlur: false
+                        property bool showBorder: false
+                        property real backgroundOpacity: 0
+                        property real borderWidth: 0
+                        property real borderOpacity: 0.12
+                        property real cornerRadius: -1
+                        property string colorMode: "auto"
+                        property JsonObject palette: JsonObject {
+                            property string primary: "primary"
+                            property string secondary: "secondary"
+                            property string tertiary: "tertiary"
+                            property string signal: "signal"
+                            property string surface: "surface"
+                        }
+                        property real x: 56
+                        property real y: 120
+                    }
+
+                    property JsonObject japaneseTypographyB: JsonObject {
+                        property bool enable: false
+                        property bool locked: false
+                        property string placementStrategy: "free"
+                        property string preset: "exhibition"
+                        property string primaryText: "夏の記憶"
+                        property string secondaryText: "潮風と、あの子と、終わらない夏"
+                        property string sealText: "特別展"
+                        property string footerText: "PACIFIC DRIVE-IN"
+                        property string dateText: "7.12 — 8.31"
+                        property real sealSize: 0
+                        property bool flowUp: false
                         property bool showSecondary: true
                         property bool showSeal: true
                         property bool showFooter: true
@@ -2500,6 +2577,8 @@ Singleton {
                     // | "separated" (every group is its own capsule)
                     // | "transparent" (no group surface at all)
                     property string borderless: "pills"
+                    // Local change: every M3 pill uses the same neutral surface tone (see M3Palette)
+                    property bool neutralPills: false
                     property bool showBackground: true
                     property bool verbose: true
                     property JsonObject clock: JsonObject {
@@ -3704,6 +3783,14 @@ Singleton {
                     // Known ids: system, sliders, toggles, notifications, widgets.
                     // Unknown ids are ignored; missing ids append in default order.
                     property list<string> sectionOrder: ["system", "sliders", "toggles", "notifications", "widgets"]
+                    // Local change: sections removed from the right sidebar (see SidebarRightContent)
+                    property list<string> hiddenSections: []
+                    // Local change: feeds for the News tab, "Category|https://feed.url" (NewsFeed)
+                    property list<string> newsFeeds: []
+                    property string newsLanguage: "all" // "all", "es", "en"
+                    property bool newsForYou: false // local: sort the news tab by likes/dislikes
+                    // local: share of each category in the news list, "Category|weight" (default 1)
+                    property list<string> newsCategoryWeights: []
                     // Look of the "system" section. "profile" = wallpaper
                     // banner + avatar + user@host card; "classic" = the flat
                     // uptime pill next to the button pill.
