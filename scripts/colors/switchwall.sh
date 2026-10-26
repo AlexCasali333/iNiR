@@ -11,7 +11,10 @@ SHELL_ROOT="$(cd "$SCRIPT_DIR/../.." 2>/dev/null && pwd)"
 # shellcheck source=scripts/lib/config-path.sh
 source "$SCRIPT_DIR/../lib/config-path.sh"
 SHELL_CONFIG_FILE="$(inir_config_file)"
-TEMPLATE_DIR="$XDG_CONFIG_HOME/matugen"
+# Local change: ~/.config/matugen belongs to the ml4w/Hyprland dotfiles and its
+# config.toml outputs (hypr, gtk, kitty, waybar...) must not be rendered from
+# here. iNiR only renders templates placed in its own directory.
+TEMPLATE_DIR="$XDG_CONFIG_HOME/inir/matugen"
 terminalscheme="$SCRIPT_DIR/terminal/scheme-base.json"
 
 # Validate critical runtime dependencies early

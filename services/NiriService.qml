@@ -523,6 +523,7 @@ Singleton {
                     updatedWorkspaces[id] = id === String(focusedWindow.workspace_id) ? updatedWs : root.workspaces[id]
                 }
                 root.workspaces = updatedWorkspaces
+                allWorkspaces = Object.values(updatedWorkspaces).sort((a, b) => a.idx - b.idx)
             }
         }
     }
@@ -542,6 +543,8 @@ Singleton {
         for (const id in root.workspaces)
             updatedWorkspaces[id] = id === String(data.workspace_id) ? updatedWs : root.workspaces[id]
         root.workspaces = updatedWorkspaces
+        // Consumers bind to allWorkspaces, so it has to follow active_window_id too.
+        allWorkspaces = Object.values(updatedWorkspaces).sort((a, b) => a.idx - b.idx)
     }
 
     function handleWindowsChanged(data) {

@@ -1,0 +1,9 @@
+{
+  "id": "niri",
+  "label": "Niri",
+  "module": "75-niri.sh",
+  "category": "desktop",
+  "inputs": ["colors.json", "theme-meta.json"],
+  "description": "Fill the dynamic focus ring, border and shadow blocks of niri's config.kdl from the generated palette (enableNiri).",
+  "configKey": "appearance.wallpaperTheming.enableNiri"
+}
